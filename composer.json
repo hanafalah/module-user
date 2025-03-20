@@ -1,0 +1,27 @@
+{
+    "name": "zahzah/module-user",
+    "autoload": {
+        "psr-4": {
+            "Zahzah\\ModuleUser\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "hamzah",
+            "email": "hamzahnuralfalah@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zahzah\\ModuleUser\\ModuleUserServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "zahzah/laravel-has-props": "2.x",
+        "zahzah/laravel-support": "2.x"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": false
+}

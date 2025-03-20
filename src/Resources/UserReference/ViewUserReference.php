@@ -1,9 +1,9 @@
 <?php
 
-namespace Zahzah\ModuleUser\Resources\UserReference;
+namespace Hanafalah\ModuleUser\Resources\UserReference;
 
 use Illuminate\Http\Request;
-use Zahzah\LaravelSupport\Resources\ApiResource;
+use Hanafalah\LaravelSupport\Resources\ApiResource;
 
 class ViewUserReference extends ApiResource
 {
@@ -14,14 +14,14 @@ class ViewUserReference extends ApiResource
             'uuid'           => $this->uuid,
             'reference_type' => $this->reference_type,
             'reference_id'   => $this->reference_id,
-            'reference'      => $this->relationValidation('reference',function(){
+            'reference'      => $this->relationValidation('reference', function () {
                 return $this->reference->toViewApi();
             }),
-            'role' => $this->relationValidation('role',function(){
+            'role' => $this->relationValidation('role', function () {
                 return $this->role->toViewApi();
             }),
-            'roles' => $this->relationValidation('roles',function(){
-                return $this->roles->transform(function($role){
+            'roles' => $this->relationValidation('roles', function () {
+                return $this->roles->transform(function ($role) {
                     return $role->toViewApi();
                 });
             }),
@@ -30,7 +30,7 @@ class ViewUserReference extends ApiResource
             'created_at'     => $this->created_at,
             'updated_at'     => $this->updated_at
         ];
-        
+
         return $arr;
     }
 }

@@ -1,8 +1,8 @@
 {
-    "name": "zahzah/module-user",
+    "name": "hanafalah/module-user",
     "autoload": {
         "psr-4": {
-            "Zahzah\\ModuleUser\\": "src/"
+            "Hanafalah\\ModuleUser\\": "src/"
         }
     },
     "authors": [
@@ -14,13 +14,13 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Zahzah\\ModuleUser\\ModuleUserServiceProvider"
+                "Hanafalah\\ModuleUser\\ModuleUserServiceProvider"
             ]
         }
     },
     "require": {
-        "zahzah/laravel-has-props": "2.x",
-        "zahzah/laravel-support": "2.x"
+        "hanafalah/laravel-has-props": "2.x",
+        "hanafalah/laravel-support": "2.x"
     },
     "minimum-stability": "dev",
     "prefer-stable": false

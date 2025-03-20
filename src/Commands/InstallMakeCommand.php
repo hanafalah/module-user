@@ -1,8 +1,9 @@
 <?php
 
-namespace Zahzah\ModuleUser\Commands;
+namespace Hanafalah\ModuleUser\Commands;
 
-class InstallMakeCommand extends EnvironmentCommand{
+class InstallMakeCommand extends EnvironmentCommand
+{
     /**
      * The name and signature of the console command.
      *
@@ -23,7 +24,7 @@ class InstallMakeCommand extends EnvironmentCommand{
      */
     public function handle()
     {
-        $provider = 'Zahzah\ModuleUser\ModuleUserServiceProvider';
+        $provider = 'Hanafalah\ModuleUser\ModuleUserServiceProvider';
 
         $this->comment('Installing User Management...');
         $this->callSilent('vendor:publish', [
@@ -44,6 +45,6 @@ class InstallMakeCommand extends EnvironmentCommand{
         ]);
         $this->info('✔️  App table migrated');
 
-        $this->comment('zahzah/module-user installed successfully.');
+        $this->comment('hanafalah/module-user installed successfully.');
     }
 }

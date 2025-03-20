@@ -1,25 +1,32 @@
 <?php
 
-namespace Zahzah\ModuleUser\Models\User;
+namespace Hanafalah\ModuleUser\Models\User;
 
-use Zahzah\LaravelHasProps\Concerns\HasProps;
-use Zahzah\LaravelSupport\Models\BaseModel;
+use Hanafalah\LaravelHasProps\Concerns\HasProps;
+use Hanafalah\LaravelSupport\Models\BaseModel;
 
-use Zahzah\LaravelHasProps\Concerns\HasCurrent;
+use Hanafalah\LaravelHasProps\Concerns\HasCurrent;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Zahzah\LaravelPermission\Concerns\HasRole;
-use Zahzah\ModuleUser\Resources\UserReference\ShowUserReference;
-use Zahzah\ModuleUser\Resources\UserReference\ViewUserReference;
+use Hanafalah\LaravelPermission\Concerns\HasRole;
+use Hanafalah\ModuleUser\Resources\UserReference\ShowUserReference;
+use Hanafalah\ModuleUser\Resources\UserReference\ViewUserReference;
 
-class UserReference extends BaseModel{
+class UserReference extends BaseModel
+{
     use HasProps, SoftDeletes, HasCurrent, HasRole;
-    
-    public function getConditions(): array{
-        return ['reference_type','reference_id','user_id'];
+
+    public function getConditions(): array
+    {
+        return ['reference_type', 'reference_id', 'user_id'];
     }
 
     protected $fillable = [
-        'id','uuid','reference_type','reference_id','user_id','current'
+        'id',
+        'uuid',
+        'reference_type',
+        'reference_id',
+        'user_id',
+        'current'
     ];
 
     // protected static function booted(): void{
@@ -31,16 +38,24 @@ class UserReference extends BaseModel{
     //     });
     // }
 
-    public function toViewApi(){
+    public function toViewApi()
+    {
         return new ViewUserReference($this);
     }
 
-    public function toShowApi(){
+    public function toShowApi()
+    {
         return new ShowUserReference($this);
     }
 
     //EIGER SECTION
-    public function reference(){return $this->morphTo();}
-    public function user(){return $this->belongsToModel('User');}
+    public function reference()
+    {
+        return $this->morphTo();
+    }
+    public function user()
+    {
+        return $this->belongsToModel('User');
+    }
     //END EIGER SECTION
 }

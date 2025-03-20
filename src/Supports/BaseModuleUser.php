@@ -1,10 +1,11 @@
 <?php
 
-namespace Zahzah\ModuleUser\Supports;
+namespace Hanafalah\ModuleUser\Supports;
 
-use Zahzah\LaravelSupport\Supports\PackageManagement;
+use Hanafalah\LaravelSupport\Supports\PackageManagement;
 
-class BaseModuleUser extends PackageManagement{
+class BaseModuleUser extends PackageManagement
+{
     /** @var array */
     protected $__module_user_config = [];
 
@@ -15,7 +16,8 @@ class BaseModuleUser extends PackageManagement{
      * @throws Exception description of exception
      * @return void
      */
-    public function __construct(){
-        $this->setConfig('module-user',$this->__module_user_config);
-    }    
-}   
+    public function __construct()
+    {
+        $this->setConfig('module-user', $this->__module_user_config);
+    }
+}

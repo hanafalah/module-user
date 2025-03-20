@@ -1,16 +1,17 @@
 <?php
 
-namespace Zahzah\ModuleUser\Concerns\Maps;
+namespace Hanafalah\ModuleUser\Concerns\Maps;
 
 use Stancl\VirtualColumn\VirtualColumn;
-use Zahzah\LaravelHasProps\Concerns\PropAttribute;
+use Hanafalah\LaravelHasProps\Concerns\PropAttribute;
 
-trait HasCoordinate {
+trait HasCoordinate
+{
     use VirtualColumn;
-    use PropAttribute{
+    use PropAttribute {
         PropAttribute::getCustomColumns insteadof VirtualColumn;
     }
-    
+
     protected static string $__coordinate_name = 'coordinate';
 
     /**
@@ -21,7 +22,8 @@ trait HasCoordinate {
      *
      * @return void
      */
-    public function initializeHasCoordinate(){
+    public function initializeHasCoordinate()
+    {
         $this->mergeFillable([
             self::$__coordinate_name
         ]);

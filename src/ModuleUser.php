@@ -1,9 +1,7 @@
 <?php
 
-namespace Zahzah\ModuleUser;
+namespace Hanafalah\ModuleUser;
 
-use Zahzah\ModuleUser\Supports\BaseModuleUser;
+use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 
-class ModuleUser extends BaseModuleUser{
-    
-}
+class ModuleUser extends BaseModuleUser {}

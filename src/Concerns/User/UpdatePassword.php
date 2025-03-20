@@ -1,7 +1,5 @@
 <?php
 
-namespace Zahzah\ModuleUser\Concerns\User;
+namespace Hanafalah\ModuleUser\Concerns\User;
 
-trait UserPassword{
-    
-}
+trait UserPassword {}

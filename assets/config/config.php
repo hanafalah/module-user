@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-use Zahzah\ModuleUser\{
+use Hanafalah\ModuleUser\{
     Models\User as ModuleUserModels,
     Commands as ModuleUserCommands,
     Contracts
@@ -9,7 +9,7 @@ use Zahzah\ModuleUser\{
 return [
     'contracts' => [
         'user'           => Contracts\User::class,
-        'user_reference' => Contracts\UserReference::class 
+        'user_reference' => Contracts\UserReference::class
     ],
     'commands' => [
         ModuleUserCommands\InstallMakeCommand::class

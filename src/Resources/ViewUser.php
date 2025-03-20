@@ -1,9 +1,9 @@
 <?php
 
-namespace Zahzah\ModuleUser\Resources;
+namespace Hanafalah\ModuleUser\Resources;
 
 use Illuminate\Http\Request;
-use Zahzah\LaravelSupport\Resources\ApiResource;
+use Hanafalah\LaravelSupport\Resources\ApiResource;
 
 class ViewUser extends ApiResource
 {
@@ -14,11 +14,11 @@ class ViewUser extends ApiResource
             'username'          => $this->username,
             'email'             => $this->email,
             'email_verified_at' => $this->email_verified_at,
-            'user_reference'    => $this->relationValidation('userReference',function(){
+            'user_reference'    => $this->relationValidation('userReference', function () {
                 return $this->userReference->toViewApi();
             })
         ];
-        
+
         return $arr;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zahzah\ModuleUser\Factories;
+namespace Hanafalah\ModuleUser\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -22,14 +22,16 @@ class UserFactory extends Factory
      * @param  \Illuminate\Database\Eloquent\Collection|null  $recycle
      * @return void
      */
-    public function __construct($count = null,
-            ?Collection $states = null,
-            ?Collection $has = null,
-            ?Collection $for = null,
-            ?Collection $afterMaking = null,
-            ?Collection $afterCreating = null,
-            $connection = null,
-            ?Collection $recycle = null){
+    public function __construct(
+        $count = null,
+        ?Collection $states = null,
+        ?Collection $has = null,
+        ?Collection $for = null,
+        ?Collection $afterMaking = null,
+        ?Collection $afterCreating = null,
+        $connection = null,
+        ?Collection $recycle = null
+    ) {
         $this->model = app(config('database.models.User'));
         parent::__construct($count, $states, $has, $for, $afterMaking, $afterCreating, $connection, $recycle);
     }
@@ -57,7 +59,7 @@ class UserFactory extends Factory
 
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => now(),
         ]);
     }

@@ -7,17 +7,24 @@ use Hanafalah\ModuleUser\{
 };
 
 return [
-    'contracts' => [
-        'user'           => Contracts\User::class,
-        'user_reference' => Contracts\UserReference::class
+    'app' => [
+        'contracts' => [
+            //ADD YOUR CONTRACTS HERE
+            'user'           => Contracts\User::class,
+            'user_reference' => Contracts\UserReference::class
+        ],
     ],
     'commands' => [
         ModuleUserCommands\InstallMakeCommand::class
     ],
+    'libs' => [
+        'model' => 'Models',
+        'contract' => 'Contracts'
+    ],
     'database' => [
         'models' => [
-            'User'           => ModuleUserModels\User::class,
-            'UserReference'  => ModuleUserModels\UserReference::class
+            // 'User'           => ModuleUserModels\User::class,
+            // 'UserReference'  => ModuleUserModels\UserReference::class
         ]
     ]
 ];

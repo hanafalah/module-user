@@ -5,6 +5,7 @@ namespace Hanafalah\ModuleUser\Schemas;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleUser\Contracts\UserReference as ContractsUserReference;
+use Hanafalah\ModuleUser\Data\UserReferenceData;
 use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 
 class UserReference extends BaseModuleUser implements ContractsUserReference
@@ -12,31 +13,56 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
     protected array $__guard   = ['reference_type', 'reference_id', 'user_id'];
     protected array $__add     = [];
     protected string $__entity = 'UserReference';
-    public static $user_reference;
+    public static $user_reference_model;
 
-    public function prepareStoreUserReference(?array $attributes = null): Model
-    {
+    public function viewUsingRelation(): array{
+        return [];
+    }
+
+    public function showUsingRelation(): array{
+        return ['reference','workspace'];
+    }
+
+    public function getUserReference(): mixed{
+        return static::$user_reference_model;
+    }
+
+    public function prepareShowUsingReference(? Model $model = null, ? array $attributes = null): Model{
         $attributes ??= request()->all();
+        $model ??= $this->getUserReference();
+        if (!isset($model)){
+            $uuid = $attributes['uuid'] ?? null;
+            if (!isset($uuid)) throw new \Exception('uuid is required');
+            $model = $this->userReference()->with($this->showUsingRelation())->uuid($uuid)->firstOrFail();
+        }else{
+            $model->load($this->showUsingRelation());
+        }
+        return static::$user_reference_model = $model;
+    }
 
-        if (isset($attributes['id'])) {
-            $guard = ['id' => $attributes['id']];
+    public function showUserReference(?Model $model = null): array{
+        return $this->showEntityResource(function() use ($model){
+            return $this->prepareShowUserReference($model);
+        });
+    }
+
+    public function prepareStoreUserReference(UserReferenceData $user_reference_dto): Model{
+        if (isset($user_reference_dto->id)) {
+            $guard = ['id' => $user_reference_dto->id];
         }
 
-        if (isset($attributes['uuid'])) {
-            $guard = ['uuid' => $attributes['uuid']];
+        if (isset($user_reference_dto->uuid)) {
+            $guard = ['uuid' => $user_reference_dto->uuid];
         }
 
-        if (!isset($attributes['id']) || !isset($attributes['uuid'])) {
+        if (!isset($user_reference_dto->id) || !isset($user_reference_dto->uuid)) {
             $guard = [
-                'user_id'        => $attributes['user_id'],
-                'reference_type' => $attributes['reference_type'],
-                'reference_id'   => $attributes['reference_id']
+                'user_id'        => $user_reference_dto->user_id,
+                'reference_type' => $user_reference_dto->reference_type,
+                'reference_id'   => $user_reference_dto->reference_id,
+                'workspace_type' => $user_reference_dto->workspace_type,
+                'workspace_id'   => $user_reference_dto->workspace_id
             ];
-            if (isset(tenancy()->tenant)) {
-                $tenant = tenancy()->tenant;
-                $guard['tenant_id'] = $tenant->getKey();
-                $guard['central_tenant_id'] = $tenant->parent_id ?? null;
-            }
         }
         $user_reference = $this->userReference()->updateOrCreate($guard);
 
@@ -57,28 +83,21 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
         return static::$user_reference = $user_reference;
     }
 
-    private function setRole($user_reference, $role)
-    {
+    public function storeUserReference(? UserReferenceData $user_reference_dto): array{
+        return $this->transaction(function() use ($user_reference_dto){
+            return $this->showUserReference($this->prepareStoreUserReference($user_reference_dto ?? UserReferenceData::from(request()->all())));
+        });
+    }
+
+    private function setRole($user_reference, $role){
         $role = $this->RoleModel()->find($role);
         $user_reference->role_id   = $role->getKey();
         $user_reference->role_name = $role->name;
         $user_reference->save();
-    }
+    }    
 
-    public function addOrChange(?array $attributes = []): self
-    {
-        static::$user_reference = $this->updateOrCreate($attributes);
-        return $this;
-    }
-
-    public function getUserReference(): mixed
-    {
-        return static::$user_reference;
-    }
-
-    public function userReference(mixed $conditionals = null): Builder
-    {
+    public function userReference(mixed $conditionals = null): Builder{
         $this->booting();
-        return $this->UserReferenceModel()->conditionals($conditionals);
+        return $this->UserReferenceModel()->conditionals($this->mergeCondition($conditionals ?? []));
     }
 }

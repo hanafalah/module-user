@@ -35,12 +35,15 @@ return new class extends Migration
                 $table->string('reference_id', 36)->nullable(false);
                 $table->foreignIdFor($user::class)->nullable(true)->index()
                     ->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+                $table->stirng('workspace_type',50)->nullable();
+                $table->stirng('workspace_id',36)->nullable();
                 $table->unsignedTinyInteger('current')->default(1);
                 $table->json('props')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
 
-                $table->index(['reference_type', 'reference_id']);
+                $table->index(['reference_type', 'reference_id'],'ur_ref');
+                $table->index(['workspace_type', 'workspace_id'],'ur_workspace');
             });
         }
     }

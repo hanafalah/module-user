@@ -24,5 +24,6 @@ return [
         'models' => [
             //ADD YOUR MODELS HERE
         ]
-    ]
+    ],
+    'workspace' => null //ADD YOUR WORKSPACE MODEL HERE
 ];

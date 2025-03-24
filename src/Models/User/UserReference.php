@@ -8,54 +8,31 @@ use Hanafalah\LaravelSupport\Models\BaseModel;
 use Hanafalah\LaravelHasProps\Concerns\HasCurrent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Hanafalah\LaravelPermission\Concerns\HasRole;
-use Hanafalah\ModuleUser\Resources\UserReference\ShowUserReference;
-use Hanafalah\ModuleUser\Resources\UserReference\ViewUserReference;
+use Hanafalah\ModuleUser\Resources\UserReference\{
+    ViewUserReference, ShowUserReference
+};
 
 class UserReference extends BaseModel
 {
     use HasProps, SoftDeletes, HasCurrent, HasRole;
 
-    public function getConditions(): array
-    {
+    public function getConditions(): array{
         return ['reference_type', 'reference_id', 'user_id'];
     }
 
     protected $fillable = [
-        'id',
-        'uuid',
-        'reference_type',
-        'reference_id',
-        'user_id',
-        'current'
+        'id','uuid','reference_type','reference_id',
+        'user_id','workspace_type','workspace_id','current'
     ];
 
-    // protected static function booted(): void{
-    //     parent::booted();
-    //     static::addGlobalScope('current_tenant',function($query){
-    //         if (isset(tenancy()->tenant)){
-    //             $query->where('tenant_id',tenancy()->tenant->getKey());
-    //         }
-    //     });
-    // }
-
-    public function toViewApi()
-    {
-        return new ViewUserReference($this);
+    public function getViewResource(){
+        return ViewUserReference::class;
     }
 
-    public function toShowApi()
-    {
-        return new ShowUserReference($this);
+    public function getShowResource(){
+        return ShowUserReference::class;
     }
 
-    //EIGER SECTION
-    public function reference()
-    {
-        return $this->morphTo();
-    }
-    public function user()
-    {
-        return $this->belongsToModel('User');
-    }
-    //END EIGER SECTION
+    public function reference(){return $this->morphTo();}
+    public function user(){return $this->belongsToModel('User');}
 }

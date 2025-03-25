@@ -50,6 +50,13 @@ return new class extends Migration
                     $table->integer('last_activity')->index();
                 });
             }
+        }else{
+            if (!Schema::hasColumn('users', 'username')) {
+                Schema::table('users', function (Blueprint $table) {
+                    $table->renameColumn('name', 'username');
+                    $table->unique('username');
+                });
+            }
         }
     }
 

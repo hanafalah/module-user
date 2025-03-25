@@ -26,6 +26,11 @@ class UserData extends Data{
         #[Password]
         public ?string $password = null,
 
+        #[MapInputName('password_confirmation')]
+        #[MapName('password_confirmation')]
+        #[Password]
+        public ?string $password_confirmation = null,
+
         #[MapInputName('email')]
         #[MapName('email')]
         #[Email]

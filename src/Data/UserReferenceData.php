@@ -20,15 +20,15 @@ class UserReferenceData extends Data{
     
         #[MapInputName('user_id')]
         #[MapName('user_id')]
-        public mixed $user_id,
+        public mixed $user_id = null,
 
         #[MapInputName('reference_type')]
         #[MapName('reference_type')]
-        public string $reference_type,
+        public ?string $reference_type = null,
 
         #[MapInputName('reference_id')]
         #[MapName('reference_id')]
-        public mixed $reference_id,
+        public ?mixed $reference_id = null,
 
         #[MapInputName('workspace_type')]
         #[MapName('workspace_type')]

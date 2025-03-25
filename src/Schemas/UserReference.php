@@ -80,12 +80,12 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
             $user_reference->roles()->detach();
         }
 
-        return static::$user_reference = $user_reference;
+        return static::$user_reference_model = $user_reference;
     }
 
     public function storeUserReference(? UserReferenceData $user_reference_dto): array{
         return $this->transaction(function() use ($user_reference_dto){
-            return $this->showUserReference($this->prepareStoreUserReference($user_reference_dto ?? UserReferenceData::from(request()->all())));
+            return $this->showUserReference($this->prepareStoreUserReference($user_reference_dto ?? $this->requestDTO(UserReferenceData::class)));
         });
     }
 

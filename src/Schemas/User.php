@@ -91,7 +91,7 @@ class User extends BaseModuleUser implements ContractsUser
 
     public function storeUser(?UserData $user_dto = null): array{
         return $this->transaction(function() use ($user_dto){
-            return $this->showUser($this->prepareStoreUser($user_dto ?? UserData::from(request()->all())));
+            return $this->showUser($this->prepareStoreUser($user_dto ?? $this->requestDTO(UserData::class)));
         });
     }
 

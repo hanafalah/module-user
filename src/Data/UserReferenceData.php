@@ -2,6 +2,7 @@
 
 namespace Hanafalah\ModuleUser\Data;
 
+use Hanafalah\LaravelPermission\Data\RoleData;
 use Hanafalah\LaravelSupport\Supports\Data;
 use Hanafalah\ModuleUser\Data\Transformers\RoleDataTransformer;
 use Spatie\LaravelData\Attributes\MapInputName;
@@ -28,7 +29,7 @@ class UserReferenceData extends Data{
 
         #[MapInputName('reference_id')]
         #[MapName('reference_id')]
-        public ?mixed $reference_id = null,
+        public mixed $reference_id = null,
 
         #[MapInputName('workspace_type')]
         #[MapName('workspace_type')]
@@ -46,5 +47,15 @@ class UserReferenceData extends Data{
         #[MapName('roles')]
         #[WithTransformer(RoleDataTransformer::class)]
         public ?array $roles = [],
-    ){}
+    ){
+        if(!empty($this->role_ids)){
+            $this->roles = $this->fetchRolesFromIds($this->role_ids);
+        }
+    }
+
+    private function fetchRolesFromIds(array $roleIds): array
+    {
+        $roles = $this->RoleModel()->whereIn('id',$roleIds)->get();
+        return $roles->map(fn($role) => RoleData::from($role))->toArray();
+    }
 }

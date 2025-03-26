@@ -21,12 +21,11 @@ class ModuleUserServiceProvider extends BaseServiceProvider
                 '*',
                 'Services' => function () {
                     $this->binds([
-                        Contracts\ModuleUser::class => new ModuleUser,
-                        Contracts\User::class          => new Schemas\User,
-                        Contracts\UserReference::class => new Schemas\UserReference
+                        Contracts\ModuleUser::class => ModuleUser::class
                     ]);
                 }
             ]);
+
     }
 
     /**

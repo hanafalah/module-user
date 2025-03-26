@@ -6,11 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Hanafalah\ModuleUser\Concerns\User\UserValidation;
-use Hanafalah\ModuleUser\Contracts\User as ContractsUser;
+use Hanafalah\ModuleUser\Contracts\Schemas\User as ContractsUser;
 use Hanafalah\ModuleUser\Data\ChangePasswordData;
 use Hanafalah\ModuleUser\Data\UserData;
-use Hanafalah\ModuleUser\Resources\ShowUser;
-use Hanafalah\ModuleUser\Resources\ViewUser;
 use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 use Hanafalah\ModuleWarehouse\Models\ModelHasRoom\ModelHasRoom;
 
@@ -66,12 +64,9 @@ class User extends BaseModuleUser implements ContractsUser
                 'email'    => $user_dto->email
             ];
 
-            $add = [
-                'email_verified_at' => $user_drot->email_verified_at ?? null
-            ];
+            $add = ['email_verified_at' => $user_dto->email_verified_at];
         }
-
-        if (!isset($user_dto->id)) {
+        if (!isset($user_dto->id) && $this->isPasswordValid()) {
             $add['password'] = Hash::make($user_dto->password ?? 'password');
         } else {
             if (isset($user_dto->password)) $add['password'] = Hash::make($user_dto->password);
@@ -81,12 +76,16 @@ class User extends BaseModuleUser implements ContractsUser
 
         $user = $this->user()->updateOrCreate($guard, $add ?? []);
         if (isset($user_dto->user_reference)) {
-            $user_dto->user_reference['user_id'] = $user->getKey();
+            $user_dto->user_reference->user_id = $user->getKey();
             $this->schemaContract('user_reference')
                  ->prepareStoreUserReference($user_dto->user_reference);
         }
 
         return static::$user_model = $user;
+    }
+
+    protected function isPasswordValid(): bool{
+        return isset($user_dto->password, $user_dto->password_confirmation) && $user_dto->password == $user_dto->password_confirmation;
     }
 
     public function storeUser(?UserData $user_dto = null): array{

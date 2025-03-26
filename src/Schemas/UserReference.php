@@ -4,7 +4,7 @@ namespace Hanafalah\ModuleUser\Schemas;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Hanafalah\ModuleUser\Contracts\UserReference as ContractsUserReference;
+use Hanafalah\ModuleUser\Contracts\Schemas\UserReference as ContractsUserReference;
 use Hanafalah\ModuleUser\Data\UserReferenceData;
 use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 

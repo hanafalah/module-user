@@ -17,45 +17,39 @@ class User extends Authenticatable
     protected $fillable = ['username', 'email', 'password'];
     protected $hidden   = ['password', 'remember_token'];
 
-    protected static function newFactory()
-    {
+    protected $casts = [
+        'email'             => 'string',        
+        'username'          => 'string',        
+        'email_verified_at' => 'datetime',
+        'password'          => 'hashed',
+    ];
+
+    protected static function newFactory(){
         return \Hanafalah\ModuleUser\Factories\UserFactory::new();
     }
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password'          => 'hashed'
-        ];
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'email_verified_at' => 'datetime',
+    //         'password'          => 'hashed'
+    //     ];
+    // }
+
+    public function getViewResource(){
+        return ViewUser::class;
     }
 
-    public function toViewApi()
-    {
-        return new ViewUser($this);
-    }
-
-    public function toShowApi()
-    {
-        return new ShowUser($this);
+    public function getShowResource(){
+        return ShowUser::class;
     }
 
     //EIGER SECTION
-    public function userReference()
-    {
-        return $this->hasOneModel('UserReference')->where(function ($q) {
-            if (isset(tenancy()->tenant)) {
-                $q->where('tenant_id', tenancy()->tenant->getKey());
-            }
-        });
+    public function userReference(){
+        return $this->hasOneModel('UserReference');
     }
-    public function userReferences()
-    {
-        return $this->hasManyModel('UserReference')->where(function ($q) {
-            if (isset(tenancy()->tenant)) {
-                $q->where('tenant_id', tenancy()->tenant->getKey());
-            }
-        });
+    public function userReferences(){
+        return $this->hasManyModel('UserReference');
     }
     //END EIGER SECTION
 }

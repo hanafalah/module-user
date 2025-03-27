@@ -2,16 +2,12 @@
 
 namespace Hanafalah\ModuleUser\Data;
 
-use Carbon\Carbon;
 use Hanafalah\LaravelPermission\Data\RoleData;
 use Hanafalah\LaravelSupport\Supports\Data;
-use Hanafalah\ModuleRegional\Data\AddressData;
+use Hanafalah\ModuleUser\Data\Transformers\RoleDataTransformer;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Attributes\Validation\Date;
-use Spatie\LaravelData\Attributes\Validation\Email;
 use Spatie\LaravelData\Attributes\WithTransformer;
-use Spatie\LaravelData\Transformers\DateTimeInterfaceTransformer;
 
 class UserReferenceData extends Data{
     public function __construct(
@@ -25,15 +21,15 @@ class UserReferenceData extends Data{
     
         #[MapInputName('user_id')]
         #[MapName('user_id')]
-        public mixed $user_id,
+        public mixed $user_id = null,
 
         #[MapInputName('reference_type')]
         #[MapName('reference_type')]
-        public string $reference_type,
+        public ?string $reference_type = null,
 
         #[MapInputName('reference_id')]
         #[MapName('reference_id')]
-        public mixed $reference_id,
+        public mixed $reference_id = null,
 
         #[MapInputName('workspace_type')]
         #[MapName('workspace_type')]
@@ -43,8 +39,23 @@ class UserReferenceData extends Data{
         #[MapName('workspace_id')]
         public mixed $workspace_id = null,
 
-        #[MapInputName('role')]
-        #[MapName('role')]
-        public ?RoleData $role = null,
-    ){}
+        #[MapInputName('role_ids')]
+        #[MapName('role_ids')]
+        public ?array $role_ids = [],
+
+        #[MapInputName('roles')]
+        #[MapName('roles')]
+        #[WithTransformer(RoleDataTransformer::class)]
+        public ?array $roles = [],
+    ){
+        if(!empty($this->role_ids)){
+            $this->roles = $this->fetchRolesFromIds($this->role_ids);
+        }
+    }
+
+    private function fetchRolesFromIds(array $roleIds): array
+    {
+        $roles = $this->RoleModel()->whereIn('id',$roleIds)->get();
+        return $roles->map(fn($role) => RoleData::from($role))->toArray();
+    }
 }

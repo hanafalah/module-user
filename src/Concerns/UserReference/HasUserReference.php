@@ -13,12 +13,10 @@ trait HasUserReference
     }
 
     //EIGER SECTION
-    public function userReference()
-    {
+    public function userReference(){
         return $this->morphOneModel('UserReference', 'reference');
     }
-    public function userReferences()
-    {
+    public function userReferences(){
         return $this->morphManyModel('UserReference', 'reference');
     }
 

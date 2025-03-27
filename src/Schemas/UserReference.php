@@ -4,7 +4,7 @@ namespace Hanafalah\ModuleUser\Schemas;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Hanafalah\ModuleUser\Contracts\UserReference as ContractsUserReference;
+use Hanafalah\ModuleUser\Contracts\Schemas\UserReference as ContractsUserReference;
 use Hanafalah\ModuleUser\Data\UserReferenceData;
 use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 
@@ -80,12 +80,12 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
             $user_reference->roles()->detach();
         }
 
-        return static::$user_reference = $user_reference;
+        return static::$user_reference_model = $user_reference;
     }
 
     public function storeUserReference(? UserReferenceData $user_reference_dto): array{
         return $this->transaction(function() use ($user_reference_dto){
-            return $this->showUserReference($this->prepareStoreUserReference($user_reference_dto ?? UserReferenceData::from(request()->all())));
+            return $this->showUserReference($this->prepareStoreUserReference($user_reference_dto ?? $this->requestDTO(UserReferenceData::class)));
         });
     }
 

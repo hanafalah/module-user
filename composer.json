@@ -19,8 +19,8 @@
         }
     },
     "require": {
-        "hanafalah/laravel-has-props": "1.x",
-        "hanafalah/laravel-support": "1.x"
+        "hanafalah/laravel-has-props": "dev-main",
+        "hanafalah/laravel-support": "dev-main"
     },
     "minimum-stability": "dev",
     "prefer-stable": false

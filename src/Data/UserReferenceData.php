@@ -51,6 +51,9 @@ class UserReferenceData extends Data{
         if(!empty($this->role_ids)){
             $this->roles = $this->fetchRolesFromIds($this->role_ids);
         }
+        if (empty($this->role_ids) && count($this->roles) > 0){
+            $this->role_ids = \array_column($this->roles,'id');
+        }
     }
 
     private function fetchRolesFromIds(array $roleIds): array

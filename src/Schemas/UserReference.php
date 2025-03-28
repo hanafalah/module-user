@@ -66,18 +66,15 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
         }
         $user_reference = $this->userReference()->updateOrCreate($guard);
 
-        if (isset($attributes['role'])) {
-            $this->setRole($user_reference, $attributes['role']);
-        } else {
-            $user_reference->role_id   = null;
-            $user_reference->role_name = null;
-        }
-
-        if (isset($attributes['roles'])) {
-            $this->setRole($user_reference, $attributes['roles'][0]);
-            $user_reference->syncRoles($attributes['roles']);
+        if (isset($user_reference_dto->roles)) {
+            $role = end($user_reference_dto->roles);
+            $this->setRole($user_reference, $role['id']);
+            $user_reference->syncRoles($user_reference_dto->role_ids);
         } else {
             $user_reference->roles()->detach();
+            $user_reference->prop_role['id']   = null;
+            $user_reference->prop_role['name']   = null;
+            $user_reference->save();
         }
 
         return static::$user_reference_model = $user_reference;
@@ -90,10 +87,8 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
     }
 
     private function setRole($user_reference, $role){
-        $role = $this->RoleModel()->find($role);
-        $user_reference->role_id   = $role->getKey();
-        $user_reference->role_name = $role->name;
-        $user_reference->save();
+        $role = $this->RoleModel()->findOrFail($role);
+        $user_reference->sync($role);
     }    
 
     public function userReference(mixed $conditionals = null): Builder{

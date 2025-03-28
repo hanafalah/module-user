@@ -25,6 +25,12 @@ class UserReference extends BaseModel
         'user_id','workspace_type','workspace_id','current'
     ];
 
+    protected $prop_attributes = [
+        'Role' => [
+            'id','name'
+        ]
+    ];
+
     public function getViewResource(){
         return ViewUserReference::class;
     }
@@ -35,4 +41,5 @@ class UserReference extends BaseModel
 
     public function reference(){return $this->morphTo();}
     public function user(){return $this->belongsToModel('User');}
+    public function workspace(){return $this->morphTo();}
 }

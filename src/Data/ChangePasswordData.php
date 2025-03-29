@@ -3,11 +3,11 @@
 namespace Hanafalah\ModuleUser\Data;
 
 use Hanafalah\LaravelSupport\Supports\Data;
-use Hanafalah\ModuleRegional\Data\AddressData;
+use Hanafalah\ModuleUser\Contracts\Data\ChangePasswordData as DataChangePasswordData;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
 
-class ChangePasswordData extends Data{
+class ChangePasswordData extends Data implements DataChangePasswordData{
     public function __construct(
         #[MapInputName('id')]
         #[MapName('id')]

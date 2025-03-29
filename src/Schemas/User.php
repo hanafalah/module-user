@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Hanafalah\ModuleUser\Concerns\User\UserValidation;
 use Hanafalah\ModuleUser\Contracts\Schemas\User as ContractsUser;
-use Hanafalah\ModuleUser\Data\ChangePasswordData;
-use Hanafalah\ModuleUser\Data\UserData;
+use Hanafalah\ModuleUser\Contracts\Data\ChangePasswordData;
+use Hanafalah\ModuleUser\Contracts\Data\UserData;
 use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 use Hanafalah\ModuleWarehouse\Models\ModelHasRoom\ModelHasRoom;
 
@@ -107,7 +107,7 @@ class User extends BaseModuleUser implements ContractsUser
 
     public function changePassword(? ChangePasswordData $change_password_dto = null): ?bool{
         return $this->transaction(function() use ($change_password_dto){
-            return $this->prepareChangePassword($change_password_dto ?? ChangePasswordData::from(request()->all()));
+            return $this->prepareChangePassword($change_password_dto ?? $this->requestDTO(ChangePasswordData::class));
         });
     }
 

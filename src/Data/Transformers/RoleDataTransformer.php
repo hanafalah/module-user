@@ -3,11 +3,12 @@
 namespace Hanafalah\ModuleUser\Data\Transformers;
 
 use Hanafalah\LaravelPermission\Data\RoleData;
+use Hanafalah\ModuleUser\Contracts\Data\Transformers\RoleDataTransformer as TransformersRoleDataTransformer;
 use Spatie\LaravelData\Support\DataProperty;
 use Spatie\LaravelData\Support\Transformation\TransformationContext;
 use Spatie\LaravelData\Transformers\Transformer;
 
-class RoleDataTransformer implements Transformer
+class RoleDataTransformer implements TransformersRoleDataTransformer,Transformer
 {
     /**
      * Transform the given value into the desired format.

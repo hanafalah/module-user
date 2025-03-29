@@ -5,8 +5,8 @@ namespace Hanafalah\ModuleUser\Contracts\Schemas;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\LaravelSupport\Contracts\Supports\DataManagement;
-use Hanafalah\ModuleUser\Data\ChangePasswordData;
-use Hanafalah\ModuleUser\Data\UserData;
+use Hanafalah\ModuleUser\Contracts\Data\ChangePasswordData;
+use Hanafalah\ModuleUser\Contracts\Data\UserData;
 use Hanafalah\ModuleWarehouse\Models\ModelHasRoom\ModelHasRoom;
 
 interface User extends DataManagement

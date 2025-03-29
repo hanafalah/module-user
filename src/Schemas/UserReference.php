@@ -5,7 +5,7 @@ namespace Hanafalah\ModuleUser\Schemas;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleUser\Contracts\Schemas\UserReference as ContractsUserReference;
-use Hanafalah\ModuleUser\Data\UserReferenceData;
+use Hanafalah\ModuleUser\Contracts\Data\UserReferenceData;
 use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 
 class UserReference extends BaseModuleUser implements ContractsUserReference
@@ -15,11 +15,11 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
     protected string $__entity = 'UserReference';
     public static $user_reference_model;
 
-    public function viewUsingRelation(): array{
+    protected function viewUsingRelation(): array{
         return [];
     }
 
-    public function showUsingRelation(): array{
+    protected function showUsingRelation(): array{
         return ['reference','workspace'];
     }
 

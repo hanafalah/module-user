@@ -4,12 +4,13 @@ namespace Hanafalah\ModuleUser\Data;
 
 use Hanafalah\LaravelPermission\Data\RoleData;
 use Hanafalah\LaravelSupport\Supports\Data;
+use Hanafalah\ModuleUser\Contracts\Data\UserReferenceData as DataUserReferenceData;
 use Hanafalah\ModuleUser\Data\Transformers\RoleDataTransformer;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\WithTransformer;
 
-class UserReferenceData extends Data{
+class UserReferenceData extends Data implements DataUserReferenceData{
     public function __construct(
         #[MapInputName('id')]
         #[MapName('id')]

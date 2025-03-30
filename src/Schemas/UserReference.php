@@ -47,15 +47,18 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
     }
 
     public function prepareStoreUserReference(UserReferenceData $user_reference_dto): Model{
-        if (isset($user_reference_dto->id)) {
-            $guard = ['id' => $user_reference_dto->id];
-        }
-
-        if (isset($user_reference_dto->uuid)) {
-            $guard = ['uuid' => $user_reference_dto->uuid];
-        }
-
-        if (!isset($user_reference_dto->id) || !isset($user_reference_dto->uuid)) {
+        if (isset($user_reference_dto->id) || isset($user_reference_dto->uuid)) {
+            $user_reference = $this->userReference()
+                ->when(isset($user_reference_dto->uuid),function($query) use ($user_reference_dto){
+                    $query->uuid($user_reference_dto->uuid);
+                })
+                ->when(isset($user_reference_dto->id),function($query) use ($user_reference_dto){
+                    $query->where('id', $user_reference_dto->id);
+                })
+                ->firstOrFail();            
+            $user_reference->workspace_id   ??= $user_reference_dto->workspace_id ?? null;
+            $user_reference->workspace_type ??= $user_reference_dto->workspace_type ?? null;
+        }else{
             $guard = [
                 'user_id'        => $user_reference_dto->user_id,
                 'reference_type' => $user_reference_dto->reference_type,
@@ -63,8 +66,8 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
                 'workspace_type' => $user_reference_dto->workspace_type,
                 'workspace_id'   => $user_reference_dto->workspace_id
             ];
+            $user_reference = $this->userReference()->updateOrCreate($guard);
         }
-        $user_reference = $this->userReference()->updateOrCreate($guard);
 
         if (isset($user_reference_dto->roles)) {
             $role = end($user_reference_dto->roles);
@@ -74,8 +77,14 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
             $user_reference->roles()->detach();
             $user_reference->prop_role['id']   = null;
             $user_reference->prop_role['name']   = null;
-            $user_reference->save();
         }
+
+        if (isset($user_reference_dto->user)){
+            $user_reference_dto->user->id ??= $user_reference_dto->user_id ?? null;
+            $user_model = $this->schemaContract('user')->prepareStoreUser($user_reference_dto->user);
+            $user_reference->user_id ??= $user_model->getKey();
+        }
+        $user_reference->save();
 
         return static::$user_reference_model = $user_reference;
     }

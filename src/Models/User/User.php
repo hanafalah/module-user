@@ -12,7 +12,7 @@ use Hanafalah\ModuleUser\Resources\ViewUser;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, HasUserReference;
+    use HasFactory, Notifiable, HasApiTokens;
 
     protected $fillable = ['username', 'email', 'password'];
     protected $hidden   = ['password', 'remember_token'];

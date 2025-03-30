@@ -4,6 +4,14 @@ namespace Hanafalah\ModuleUser\Concerns\UserReference;
 
 trait HasUserReference
 {
+    public static function bootHasUserReference(){
+        static::created(function($query){
+            $user_reference = $query->userReference()->firstOrCreate();
+            $query->uuid = $user_reference->uuid;
+            static::withoutEvents(function() use ($query) { $query->save(); });
+        });
+    }
+
     //SCOPE SECTION
     public function scopeHasRefUuid($builder, $uuid, $uuid_name = 'uuid')
     {

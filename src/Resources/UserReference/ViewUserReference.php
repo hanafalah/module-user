@@ -17,9 +17,7 @@ class ViewUserReference extends ApiResource
             'reference'      => $this->relationValidation('reference', function () {
                 return $this->reference->toViewApi();
             }),
-            'role' => $this->relationValidation('role', function () {
-                return $this->role->toViewApi();
-            }),
+            'role' => $this->prop_role,
             'roles' => $this->relationValidation('roles', function () {
                 return $this->roles->transform(function ($role) {
                     return $role->toViewApi();

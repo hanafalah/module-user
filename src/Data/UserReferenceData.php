@@ -24,6 +24,10 @@ class UserReferenceData extends Data implements DataUserReferenceData{
         #[MapName('user_id')]
         public mixed $user_id = null,
 
+        #[MapInputName('user')]
+        #[MapName('user')]
+        public ?UserData $user = null,
+
         #[MapInputName('reference_type')]
         #[MapName('reference_type')]
         public ?string $reference_type = null,
@@ -49,6 +53,9 @@ class UserReferenceData extends Data implements DataUserReferenceData{
         #[WithTransformer(RoleDataTransformer::class)]
         public ?array $roles = [],
     ){
+        if (isset($this->user,$this->user->id) && !isset($this->user_id)){
+            $this->user_id = $this->user->id;
+        }
         if(!empty($this->role_ids)){
             $this->roles = $this->fetchRolesFromIds($this->role_ids);
         }

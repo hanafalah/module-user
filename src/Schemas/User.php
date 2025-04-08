@@ -98,11 +98,13 @@ class User extends BaseModuleUser implements ContractsUser
         if (!isset($change_password_dto->id)) throw new \Exception('User Id is required', 422);
         if (!$this->checkRequestPassword()) throw new \Exception('New Password, old password and new password confirmation is required', 422);
 
-        return $this->UserModel()->updateOrCreate([
+        $this->UserModel()->updateOrCreate([
             'id' => $change_password_dto->id
         ], [
             'password' => Hash::make($change_password_dto->password)
         ]);
+
+        return true;
     }
 
     public function changePassword(? ChangePasswordData $change_password_dto = null): ?bool{

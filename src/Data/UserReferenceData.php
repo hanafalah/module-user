@@ -56,6 +56,9 @@ class UserReferenceData extends Data implements DataUserReferenceData{
         if (isset($data->user,$data->user->id) && !isset($data->user_id)){
             $data->user_id = $data->user->id;
         }
+
+        if (!isset($data->roles) && !isset($data->role_ids)) throw new \Exception('roles or role_ids is required');
+
         if(!empty($data->role_ids)){
             $data->roles = $data->fetchRolesFromIds($data->role_ids);
         }

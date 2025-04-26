@@ -10,24 +10,15 @@ use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 
 class UserReference extends BaseModuleUser implements ContractsUserReference
 {
-    protected array $__guard   = ['reference_type', 'reference_id', 'user_id'];
-    protected array $__add     = [];
     protected string $__entity = 'UserReference';
     public static $user_reference_model;
-
-    protected function viewUsingRelation(): array{
-        return [];
-    }
 
     protected function showUsingRelation(): array{
         return ['reference','workspace'];
     }
 
-    public function getUserReference(): mixed{
-        return static::$user_reference_model;
-    }
 
-    public function prepareShowUsingReference(? Model $model = null, ? array $attributes = null): Model{
+    public function prepareShowUserReference(? Model $model = null, ? array $attributes = null): Model{
         $attributes ??= request()->all();
         $model ??= $this->getUserReference();
         if (!isset($model)){
@@ -38,12 +29,6 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
             $model->load($this->showUsingRelation());
         }
         return static::$user_reference_model = $model;
-    }
-
-    public function showUserReference(?Model $model = null): array{
-        return $this->showEntityResource(function() use ($model){
-            return $this->prepareShowUserReference($model);
-        });
     }
 
     public function prepareStoreUserReference(UserReferenceData $user_reference_dto): Model{
@@ -89,19 +74,8 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
         return static::$user_reference_model = $user_reference;
     }
 
-    public function storeUserReference(? UserReferenceData $user_reference_dto): array{
-        return $this->transaction(function() use ($user_reference_dto){
-            return $this->showUserReference($this->prepareStoreUserReference($user_reference_dto ?? $this->requestDTO(UserReferenceData::class)));
-        });
-    }
-
     private function setRole($user_reference, $role){
         $role = $this->RoleModel()->findOrFail($role);
         $user_reference->sync($role);
     }    
-
-    public function userReference(mixed $conditionals = null): Builder{
-        $this->booting();
-        return $this->UserReferenceModel()->conditionals($this->mergeCondition($conditionals ?? []));
-    }
 }

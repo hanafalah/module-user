@@ -28,13 +28,15 @@ class User extends Authenticatable
         return \Hanafalah\ModuleUser\Factories\UserFactory::new();
     }
 
-    // protected function casts(): array
-    // {
-    //     return [
-    //         'email_verified_at' => 'datetime',
-    //         'password'          => 'hashed'
-    //     ];
-    // }
+    public function showUsingRelation(): array{
+        return [
+            'userReference'
+        ];
+    }
+
+    public function viewUsingRelation(): array{
+        return [];
+    }
 
     public function getViewResource(){
         return ViewUser::class;

@@ -1,29 +1,32 @@
 <?php
 
 use Hanafalah\ModuleUser\{
-    Models\User as ModuleUserModels,
     Commands as ModuleUserCommands,
-    Contracts
 };
 
 return [
+    'namespace' => 'Hanafalah\\ModuleUser',
     'app' => [
         'contracts' => [
             //ADD YOUR CONTRACTS HERE
         ],
     ],
-    'commands' => [
-        ModuleUserCommands\InstallMakeCommand::class
-    ],
     'libs' => [
-        'model'    => 'Models',
+        'model' => 'Models',
         'contract' => 'Contracts',
-        'schema'   => 'Schemas'
+        'schema' => 'Schemas',
+        'database' => 'Database',
+        'data' => 'Data',
+        'resource' => 'Resources',
+        'migration' => '../assets/database/migrations'
     ],
     'database' => [
         'models' => [
             //ADD YOUR MODELS HERE
         ]
+    ],
+    'commands' => [
+        ModuleUserCommands\InstallMakeCommand::class
     ],
     'workspace' => null //ADD YOUR WORKSPACE MODEL HERE
 ];

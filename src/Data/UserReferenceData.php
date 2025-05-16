@@ -33,7 +33,7 @@ class UserReferenceData extends Data implements DataUserReferenceData{
 
     #[MapInputName('reference_id')]
     #[MapName('reference_id')]
-    public mixed $reference_id = null;
+    public ?string $reference_id = null;
 
     #[MapInputName('workspace_type')]
     #[MapName('workspace_type')]

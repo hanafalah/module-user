@@ -16,6 +16,10 @@ class UserReference extends BaseModel
 {
     use HasProps, SoftDeletes, HasCurrent, HasRole;
 
+    protected $casts = [
+        'reference_id' => 'string'
+    ];
+
     public function getConditions(): array{
         return ['reference_type', 'reference_id', 'user_id'];
     }

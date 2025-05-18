@@ -11,12 +11,16 @@ use Hanafalah\LaravelPermission\Concerns\HasRole;
 use Hanafalah\ModuleUser\Resources\UserReference\{
     ViewUserReference, ShowUserReference
 };
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 class UserReference extends BaseModel
 {
-    use HasProps, SoftDeletes, HasCurrent, HasRole;
+    use HasUlids, HasProps, SoftDeletes, HasCurrent, HasRole;
 
-    protected $casts = [
+    public $incrementing  = false;
+    protected $keyType    = 'string';
+    protected $primaryKey = 'id';
+    protected $casts      = [
         'reference_id' => 'string'
     ];
 
@@ -54,4 +58,5 @@ class UserReference extends BaseModel
     public function reference(){return $this->morphTo();}
     public function user(){return $this->belongsToModel('User');}
     public function workspace(){return $this->morphTo();}
+    public function tenant(){return $this->morphTo(__FUNCTION__, "workspace_type", "workspace_id");}
 }

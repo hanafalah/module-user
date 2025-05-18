@@ -33,7 +33,7 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
 
     public function prepareStoreUserReference(UserReferenceData $user_reference_dto): Model{
         if (isset($user_reference_dto->id) || isset($user_reference_dto->uuid)) {
-            $user_reference = $this->userReference()
+            $user_reference = $this->usingEntity()
                 ->when(isset($user_reference_dto->uuid),function($query) use ($user_reference_dto){
                     $query->uuid($user_reference_dto->uuid);
                 })
@@ -53,8 +53,7 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
             ];
             $user_reference = $this->userReference()->updateOrCreate($guard);
         }
-
-        if (isset($user_reference_dto->roles)) {
+        if (isset($user_reference_dto->roles) && count($user_reference_dto->roles) > 0) {
             $role = end($user_reference_dto->roles);
             $this->setRole($user_reference, $role['id']);
             $user_reference->syncRoles($user_reference_dto->role_ids);

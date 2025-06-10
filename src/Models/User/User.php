@@ -6,16 +6,19 @@ namespace Hanafalah\ModuleUser\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Hanafalah\ApiHelper\Concerns\Token\HasApiTokens;
-use Hanafalah\ModuleUser\Concerns\UserReference\HasUserReference;
 use Hanafalah\ModuleUser\Resources\ShowUser;
 use Hanafalah\ModuleUser\Resources\ViewUser;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, HasUserReference;
+    use HasUlids, HasFactory, Notifiable, HasApiTokens;
 
-    protected $fillable = ['username', 'email', 'password'];
-    protected $hidden   = ['password', 'remember_token'];
+    public $incrementing  = false;
+    protected $keyType    = 'string';
+    protected $primaryKey = 'id';
+    protected $fillable   = ['username', 'email', 'password'];
+    protected $hidden     = ['password', 'remember_token'];
 
     protected $casts = [
         'email'             => 'string',        
@@ -28,13 +31,15 @@ class User extends Authenticatable
         return \Hanafalah\ModuleUser\Factories\UserFactory::new();
     }
 
-    // protected function casts(): array
-    // {
-    //     return [
-    //         'email_verified_at' => 'datetime',
-    //         'password'          => 'hashed'
-    //     ];
-    // }
+    public function showUsingRelation(): array{
+        return [
+            'userReference'
+        ];
+    }
+
+    public function viewUsingRelation(): array{
+        return [];
+    }
 
     public function getViewResource(){
         return ViewUser::class;

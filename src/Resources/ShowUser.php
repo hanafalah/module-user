@@ -11,7 +11,6 @@ class ShowUser extends ViewUser
     {
         $arr = [];
         $arr = $this->mergeArray(parent::toArray($request), $arr);
-
         return $arr;
     }
 }

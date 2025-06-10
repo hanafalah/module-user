@@ -14,38 +14,36 @@ use Spatie\LaravelData\Attributes\WithTransformer;
 use Spatie\LaravelData\Transformers\DateTimeInterfaceTransformer;
 
 class UserData extends Data implements DataUserData{
-    public function __construct(
-        #[MapInputName('id')]
-        #[MapName('id')]
-        public mixed $id = null,
+    #[MapInputName('id')]
+    #[MapName('id')]
+    public mixed $id = null;
     
-        #[MapInputName('username')]
-        #[MapName('username')]
-        public string $username,
+    #[MapInputName('username')]
+    #[MapName('username')]
+    public string $username;
     
-        #[MapInputName('password')]
-        #[MapName('password')]
-        #[Password]
-        public ?string $password = null,
+    #[MapInputName('password')]
+    #[MapName('password')]
+    #[Password]
+    public ?string $password = null;
 
-        #[MapInputName('password_confirmation')]
-        #[MapName('password_confirmation')]
-        #[Password]
-        public ?string $password_confirmation = null,
+    #[MapInputName('password_confirmation')]
+    #[MapName('password_confirmation')]
+    #[Password]
+    public ?string $password_confirmation = null;
 
-        #[MapInputName('email')]
-        #[MapName('email')]
-        #[Email]
-        #[Unique('users', 'email')]
-        public string $email,
+    #[MapInputName('email')]
+    #[MapName('email')]
+    #[Email]
+    #[Unique('users', 'email')]
+    public string $email;
 
-        #[MapInputName('email_verified_at')]
-        #[MapName('email_verified_at')]
-        #[WithTransformer(DateTimeInterfaceTransformer::class)]
-        public ?Carbon $email_verified_at = null,
+    #[MapInputName('email_verified_at')]
+    #[MapName('email_verified_at')]
+    #[WithTransformer(DateTimeInterfaceTransformer::class)]
+    public ?Carbon $email_verified_at = null;
 
-        #[MapInputName('user_reference')]
-        #[MapName('user_reference')]
-        public ?UserReferenceData $user_reference = null
-    ){}
+    #[MapInputName('user_reference')]
+    #[MapName('user_reference')]
+    public ?UserReferenceData $user_reference = null;
 }

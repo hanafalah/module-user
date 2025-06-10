@@ -16,44 +16,8 @@ class User extends BaseModuleUser implements ContractsUser
 {
     use UserValidation;
 
-    protected array $__guard   = ['username', 'email'];
-    protected array $__add     = ['password', 'email_verified_at'];
     protected string $__entity = 'User';
     public static $user_model;
-
-    public function showUsingRelation(): array{
-        return [
-            'userReference'
-        ];
-    }
-
-    public function viewUsingRelation(): array{
-        return [];
-    }
-
-    public function getUser(): mixed{
-        return static::$user_model;
-    }
-
-    public function prepareShowUser(?Model $model = null, ?array $attributes = null): ModelHasRoom{
-        $attributes ??= \request()->all();
-
-        $model ??= $this->getUser();
-        if (!isset($model)) {
-            $id = $attributes['id'] ?? null;
-            if (!isset($id)) throw new \Exception('User Id is required', 422);
-            $model = $this->user()->with($this->showUsingRelation())->findOrFail($id);
-        } else {
-            $model->load($this->showUsingRelation());
-        }
-        return static::$user_model = $model;
-    }
-
-    public function showUser(?Model $model = null): array{
-        return $this->showEntityResource(function() use ($model){
-            return $this->prepareShowUser($model);
-        });
-    }
 
     public function prepareStoreUser(UserData $user_dto): Model{
         if (isset($user_dto->id)) {
@@ -76,9 +40,10 @@ class User extends BaseModuleUser implements ContractsUser
 
         $user = $this->user()->updateOrCreate($guard, $add ?? []);
         if (isset($user_dto->user_reference)) {
-            $user_dto->user_reference->user_id = $user->getKey();
+            $user_reference_dto = &$user_dto->user_reference;
+            $user_reference_dto->user_id = $user->getKey();
             $this->schemaContract('user_reference')
-                 ->prepareStoreUserReference($user_dto->user_reference);
+                 ->prepareStoreUserReference($user_reference_dto);
         }
 
         return static::$user_model = $user;
@@ -88,21 +53,17 @@ class User extends BaseModuleUser implements ContractsUser
         return isset($user_dto->password, $user_dto->password_confirmation) && $user_dto->password == $user_dto->password_confirmation;
     }
 
-    public function storeUser(?UserData $user_dto = null): array{
-        return $this->transaction(function() use ($user_dto){
-            return $this->showUser($this->prepareStoreUser($user_dto ?? $this->requestDTO(UserData::class)));
-        });
-    }
-
     public function prepareChangePassword(ChangePasswordData $change_password_dto): ?bool{
         if (!isset($change_password_dto->id)) throw new \Exception('User Id is required', 422);
         if (!$this->checkRequestPassword()) throw new \Exception('New Password, old password and new password confirmation is required', 422);
 
-        return $this->UserModel()->updateOrCreate([
+        $this->UserModel()->updateOrCreate([
             'id' => $change_password_dto->id
         ], [
             'password' => Hash::make($change_password_dto->password)
         ]);
+
+        return true;
     }
 
     public function changePassword(? ChangePasswordData $change_password_dto = null): ?bool{
@@ -113,11 +74,6 @@ class User extends BaseModuleUser implements ContractsUser
 
     private function checkRequestPassword(): bool{
         return request()->has('password') && request()->has('old_password') && request()->has('password_confirmation');
-    }
-
-    public function user(mixed $conditionals = null): Builder{
-        $this->booting();
-        return $this->UserModel()->conditionals($this->mergeCondition($conditionals ?? []))->withParameters();
     }
 
     public function getUserByUsernameId(string $username, mixed $user_id): ?Model{

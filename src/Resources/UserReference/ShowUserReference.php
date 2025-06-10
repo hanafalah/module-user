@@ -12,9 +12,6 @@ class ShowUserReference extends ViewUserReference
             'reference' => $this->relationValidation('reference', function () {
                 return $this->reference->toShowApi();
             }),
-            'role' => $this->relationValidation('role', function () {
-                return $this->role->toShowApi();
-            }),
             'roles' => $this->relationValidation('roles', function () {
                 return $this->roles->transform(function ($role) {
                     return $role->toShowApi();

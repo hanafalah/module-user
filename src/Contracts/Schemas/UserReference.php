@@ -7,11 +7,20 @@ use Hanafalah\ModuleUser\Contracts\Data\UserReferenceData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @see \Hanafalah\ModuleUser\Schemas\UserReference
+ * @method self conditionals(mixed $conditionals)
+ * @method array storeUserReference(?UserReferenceData $rab_work_list_dto = null)
+ * @method bool deleteUserReference()
+ * @method bool prepareDeleteUserReference(? array $attributes = null)
+ * @method mixed getUserReference()
+ * @method array viewUserReferenceList()
+ * @method Collection prepareViewUserReferenceList(? array $attributes = null)
+ * @method LengthAwarePaginator prepareViewUserReferencePaginate(PaginateData $paginate_dto)
+ * @method array viewUserReferencePaginate(?PaginateData $paginate_dto = null)
+ * @method Builder function userReference(mixed $conditionals = null)
+ */
 interface UserReference extends DataManagement {
-    public function getUserReference(): mixed;
-    public function prepareShowUsingReference(? Model $model = null, ? array $attributes = null): Model;
-    public function showUserReference(?Model $model = null): array;
+    public function prepareShowUserReference(? Model $model = null, ? array $attributes = null): Model;
     public function prepareStoreUserReference(UserReferenceData $user_reference_dto): Model;
-    public function storeUserReference(? UserReferenceData $user_reference_dto): array;
-    public function userReference(mixed $conditionals = null): Builder;
 }

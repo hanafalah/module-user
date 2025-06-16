@@ -70,6 +70,7 @@ class UserReferenceData extends Data implements DataUserReferenceData{
 
     private function fetchRolesFromIds(array $roleIds): array{
         $roles = $this->RoleModel()->whereIn('id',$roleIds)->get();
+        if (count($roles) == 0) throw new \Exception(sprintf('There is no role data with id %s',implode(',',$roleIds)));
         return $roles->map(fn($role) => RoleData::from($role))->toArray();
     }
 }

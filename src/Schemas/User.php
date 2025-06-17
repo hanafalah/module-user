@@ -40,10 +40,10 @@ class User extends BaseModuleUser implements ContractsUser
 
         $user = $this->user()->updateOrCreate($guard, $add ?? []);
         if (isset($user_dto->user_reference)) {
-            $user_reference_dto = &$user_dto->user_reference;
-            $user_reference_dto->user_id = $user->getKey();
+            $user_reference = &$user_dto->user_reference;
+            $user_reference->user_id = $user->getKey();
             $this->schemaContract('user_reference')
-                 ->prepareStoreUserReference($user_reference_dto);
+                 ->prepareStoreUserReference($user_reference);
         }
 
         return static::$user_model = $user;

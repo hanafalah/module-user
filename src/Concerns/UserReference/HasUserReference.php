@@ -8,7 +8,8 @@ trait HasUserReference
         static::created(function($query){
             $user_reference = $query->userReference()->firstOrCreate();
             $query->uuid = $user_reference->uuid;
-            static::withoutEvents(function() use ($query) { $query->save(); });
+            $query->save();
+            // static::withoutEvents(function() use ($query) { $query->save(); });
         });
     }
 

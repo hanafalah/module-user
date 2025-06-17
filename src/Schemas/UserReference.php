@@ -2,7 +2,6 @@
 
 namespace Hanafalah\ModuleUser\Schemas;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModuleUser\Contracts\Schemas\UserReference as ContractsUserReference;
 use Hanafalah\ModuleUser\Contracts\Data\UserReferenceData;
@@ -12,11 +11,6 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
 {
     protected string $__entity = 'UserReference';
     public static $user_reference_model;
-
-    protected function showUsingRelation(): array{
-        return ['reference','workspace'];
-    }
-
 
     public function prepareShowUserReference(? Model $model = null, ? array $attributes = null): Model{
         $attributes ??= request()->all();
@@ -31,14 +25,15 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
         return static::$user_reference_model = $model;
     }
 
+
     public function prepareStoreUserReference(UserReferenceData $user_reference_dto): Model{
         if (isset($user_reference_dto->id) || isset($user_reference_dto->uuid)) {
-            $user_reference = $this->usingEntity()
+            $user_reference = $this->UserReferenceModel()
                 ->when(isset($user_reference_dto->uuid),function($query) use ($user_reference_dto){
-                    $query->uuid($user_reference_dto->uuid);
+                    return $query->where('uuid',$user_reference_dto->uuid);
                 })
                 ->when(isset($user_reference_dto->id),function($query) use ($user_reference_dto){
-                    $query->where('id', $user_reference_dto->id);
+                    return $query->where('id', $user_reference_dto->id);
                 })
                 ->firstOrFail();            
             $user_reference->workspace_id   ??= $user_reference_dto->workspace_id ?? null;
@@ -62,14 +57,12 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
             $user_reference->prop_role['id']   = null;
             $user_reference->prop_role['name']   = null;
         }
-
         if (isset($user_reference_dto->user)){
             $user_reference_dto->user->id ??= $user_reference_dto->user_id ?? null;
             $user_model = $this->schemaContract('user')->prepareStoreUser($user_reference_dto->user);
             $user_reference->user_id ??= $user_model->getKey();
         }
         $user_reference->save();
-
         return static::$user_reference_model = $user_reference;
     }
 

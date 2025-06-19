@@ -28,5 +28,6 @@ return [
     'commands' => [
         ModuleUserCommands\InstallMakeCommand::class
     ],
+    'reference'  => null, //ADD YOUR WORKSPACE MODEL HERE
     'workspace' => null //ADD YOUR WORKSPACE MODEL HERE
 ];

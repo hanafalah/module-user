@@ -15,7 +15,7 @@ class ViewUser extends ApiResource
             'email'             => $this->email,
             'email_verified_at' => $this->email_verified_at,
             'user_reference'    => $this->relationValidation('userReference', function () {
-                return $this->userReference->toViewApi();
+                return $this->userReference->toViewApi()->resolve();
             })
         ];
 

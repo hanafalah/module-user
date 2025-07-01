@@ -15,12 +15,12 @@ class ViewUserReference extends ApiResource
             'reference_type' => $this->reference_type,
             'reference_id'   => $this->reference_id,
             'reference'      => $this->relationValidation('reference', function () {
-                return $this->reference->toViewApi();
+                return $this->reference->toViewApi()->resolve();
             }),
             'role' => $this->prop_role,
             'roles' => $this->relationValidation('roles', function () {
                 return $this->roles->transform(function ($role) {
-                    return $role->toViewApi();
+                    return $role->toViewApi()->resolve();
                 });
             }),
             'user_id'        => $this->user_id,

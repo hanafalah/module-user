@@ -10,7 +10,7 @@ class ShowUserReference extends ViewUserReference
     {
         $arr = [
             'reference' => $this->relationValidation('reference', function () {
-                return $this->reference->toShowApi();
+                return $this->reference->toShowApi()->resolve();
             }),
             'roles' => $this->relationValidation('roles', function () {
                 return $this->roles->transform(function ($role) {
@@ -18,11 +18,10 @@ class ShowUserReference extends ViewUserReference
                 });
             }),
             'user' => $this->relationValidation('user', function () {
-                return $this->user->toShowApi();
+                return $this->user->toShowApi()->resolve();
             })
         ];
         $arr = $this->mergeArray(parent::toArray($request), $arr);
-
         return $arr;
     }
 }

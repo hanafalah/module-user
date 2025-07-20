@@ -17,7 +17,7 @@ class User extends BaseModuleUser implements ContractsUser
     use UserValidation;
 
     protected string $__entity = 'User';
-    public static $user_model;
+    public $user_model;
 
     public function prepareStoreUser(UserData $user_dto): Model{
         if (isset($user_dto->id)) {
@@ -46,7 +46,7 @@ class User extends BaseModuleUser implements ContractsUser
                  ->prepareStoreUserReference($user_reference);
         }
 
-        return static::$user_model = $user;
+        return $this->user_model = $user;
     }
 
     protected function isPasswordValid(): bool{

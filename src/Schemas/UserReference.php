@@ -10,7 +10,7 @@ use Hanafalah\ModuleUser\Supports\BaseModuleUser;
 class UserReference extends BaseModuleUser implements ContractsUserReference
 {
     protected string $__entity = 'UserReference';
-    public static $user_reference_model;
+    public $user_reference_model;
 
     public function prepareShowUserReference(? Model $model = null, ? array $attributes = null): Model{
         $attributes ??= request()->all();
@@ -22,7 +22,7 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
         }else{
             $model->load($this->showUsingRelation());
         }
-        return static::$user_reference_model = $model;
+        return $this->user_reference_model = $model;
     }
 
 
@@ -63,7 +63,7 @@ class UserReference extends BaseModuleUser implements ContractsUserReference
             $user_reference->user_id ??= $user_model->getKey();
         }
         $user_reference->save();
-        return static::$user_reference_model = $user_reference;
+        return $this->user_reference_model = $user_reference;
     }
 
     private function setRole($user_reference, $role){
